@@ -1,8 +1,9 @@
-﻿function Remove-CsvValue {
-<#
+﻿<#
     .SYNOPSIS
-    [CSV] Löscht in der übergebenen CSV-Datei Einträge, die den übergebenen Wert haben. Die Suche ist nicht case-sensitive.
+    Removes an csv-entry in a given *.csv-file where a given key has a given value.
+    Does nothing when the file does not exist.
 #>
+function Remove-CsvValue {
 
     param (
         [Parameter( Mandatory )]

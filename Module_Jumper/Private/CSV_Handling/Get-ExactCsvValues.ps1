@@ -1,4 +1,9 @@
-﻿function Get-ExactCsvValues {
+﻿<#
+    .SYNOPSIS
+    Searches in a given *.csv-file for entries that are equal the given value under a given key.
+    When the file does not exists, it returns $null.
+#>
+function Get-ExactCsvValues {
 
     param (
         [Parameter( Mandatory )]
@@ -21,10 +26,11 @@
 
         Write-Debug "[Get-ExactCsvValue] Path: $Path, Key: $Key, Value: $Value"
 
-        $table = Import-Csv -Delimiter "," -Path $Path
-        if (-not $table) {
-            return
+        if (-not (Test-Path $Path)) {
+            return $null
         }
+
+        $table = Import-Csv -Delimiter "," -Path $Path
 
         if (-not ($Key -and $Value)) {
             return $table

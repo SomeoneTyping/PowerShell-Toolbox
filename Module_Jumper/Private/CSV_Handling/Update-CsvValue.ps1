@@ -1,3 +1,8 @@
+<#
+    .SYNOPSIS
+    Updates an csv-entry in a given *.csv-file.
+    Does nothing when the file does not exist.
+#>
 function Update-CsvValue {
 
     param (

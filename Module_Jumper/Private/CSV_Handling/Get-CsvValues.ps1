@@ -1,6 +1,7 @@
 ﻿<#
     .SYNOPSIS
-    Searches in a given *.csv-file for entries that contain a given value under a given key
+    Searches in a given *.csv-file for entries that contain a given value under a given key.
+    When the file does not exists, it returns $null.
 #>
 function Get-CsvValues {
 
@@ -22,10 +23,11 @@ function Get-CsvValues {
 
         Write-Debug "[Get-CsvValues] Path: $Path, Key: $Key, ValueContains: $ValueContains"
 
-        $table = Import-Csv -Delimiter "," -Path $Path
-        if (-not $table) {
-            return
+        if (-not (Test-Path $Path)) {
+            return $null
         }
+
+        $table = Import-Csv -Delimiter "," -Path $Path
 
         if (-not ($Key -and $ValueContains)) {
             return $table

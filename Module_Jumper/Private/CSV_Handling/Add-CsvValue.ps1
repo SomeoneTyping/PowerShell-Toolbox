@@ -1,4 +1,8 @@
-﻿function Add-CsvValue {
+﻿<#
+    .SYNOPSIS
+    Adds in a given *.csv-file a new entry defined by a given PSObject
+#>
+function Add-CsvValue {
 
     param (
         [Parameter( Mandatory )]
