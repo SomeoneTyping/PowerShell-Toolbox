@@ -19,6 +19,11 @@ function Add-CsvValue {
     process {
 
         Write-Debug "[Add-CsvValue] Path: '$Path'"
+
+        if (-not (Test-Path $Path)) {
+            New-Item -Path $Path -ItemType File -Force | Out-Null
+        }
+
         $PsObject | Export-Csv -Path $Path -Delimiter "," -Append -NoTypeInformation
     }
 }

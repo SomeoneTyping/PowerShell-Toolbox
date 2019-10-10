@@ -28,12 +28,6 @@ function Enter-Folder {
         $tagValidated = if ($Tag) { $Tag.ToLower() } else { "*" }
         $pathesFile = Get-FileLocationPathesCsv
 
-        $resultsForContainsSearch = Get-CsvValues -Path $pathesFile -Key "tag" -ValueContains $tagValidated
-        if (-not $resultsForContainsSearch) {
-            Write-Host ([string]::Format("No results found for request '{0}'", $Tag)) -ForegroundColor Red
-            return
-        }
-
         if ($Add) {
             $searchAddRequest = Get-ExactCsvValues -Path $pathesFile -Key "tag" -Value $Add
             if ($searchAddRequest) {
@@ -44,6 +38,12 @@ function Enter-Folder {
                 $newPathObject = New-PathObject -Tag $Add -Path $currentLocation
                 Add-CsvValue -Path $pathesFile -PsObject $newPathObject
             }
+        }
+
+        $resultsForContainsSearch = Get-CsvValues -Path $pathesFile -Key "tag" -ValueContains $tagValidated
+        if (-not $resultsForContainsSearch) {
+            Write-Host ([string]::Format("No results found for request '{0}'", $Tag)) -ForegroundColor Red
+            return
         }
 
         if ($Remove.IsPresent) {
