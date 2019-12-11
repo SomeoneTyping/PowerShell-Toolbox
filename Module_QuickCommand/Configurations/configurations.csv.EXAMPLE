@@ -1,0 +1,4 @@
+"command","description","criteriaModus","criteria"
+"docker build --tag currentdocker . ; docker run -it currentdocker","Build and start the Docker container","FolderContains","Dockerfile"
+"$cont = docker ps -a -q ; if ($cont) { docker rm $cont }","Delete alle exited Docker container","FolderContains","Dockerfile"
+"docker images | ConvertFrom-String | Where-Object {$_.P2 -eq "<none>"} | Foreach-Object { docker rmi $_.P3 }","Delete all untagged Docker images","FolderContains","Dockerfile"
