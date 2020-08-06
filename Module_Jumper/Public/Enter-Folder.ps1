@@ -65,12 +65,29 @@ function Enter-Folder {
             return
         }
 
-        $firstPathEntry = $resultsForContainsSearch | Where-Object { (Test-Path $_.path) } | Select-Object -First 1
-        if (-not $firstPathEntry) {
-            Write-Host ([string]::Format("No existing pathes for request '{0}'", $Tag)) -ForegroundColor Red
-            return
+        $resultCount = ($resultsForContainsSearch | Measure-Object).Count
+        switch ($resultCount) {
+            0 {
+                Write-Host ([string]::Format("No existing pathes for request '{0}'", $Tag)) -ForegroundColor Red
+            }
+            1 {
+                $resultsForContainsSearch | Where-Object { (Test-Path $_.path) } | Select-Object -First 1 | Foreach-Object { Set-Location $_.path }
+            }
+            Default {
+                Write-Host "There is more than one result"
+                $counter = 1;
+                foreach ($path in $resultsForContainsSearch) {
+                    $color = if (Test-Path $path.path) { "White" } else { "Yellow" }
+                    $tagText = $path.tag
+                    Write-InfoLine ("($counter) $tagText") $path.path -space 25 -color $color
+                    $counter++;
+                }
+                $input = Read-Host "Goto Path"
+                if ($input -match "^[0-9]{1,2}$") {
+                    $inputAsNumber = ($input -as [int]) - 1
+                    $resultsForContainsSearch | Select-Object -Index $inputAsNumber | Set-Location
+                }
+            }
         }
-
-        Set-Location $firstPathEntry.path
     }
 }
