@@ -31,20 +31,19 @@ Attention: The QuickCommand needs the module "CsvTools" in this repository
 Example:
 
 ```powershell
-# Add the current position to the caret list
+# Example: in your current folder is a Dockerfile
 PS /home/some/docker/folder> ls
 
 [...]
 -a----       01.01.2019     15:00            123 Dockerfile
 [...]
 
-# List all saved carets
+# Type "quick" and it will list some previously saved commands (see configurations.csv.EXAMPLE) to execute directly
 PS /home/some/docker/folder> quick
+  1 - docker build --tag currentdocker . ; docker run -it currentdocker
+Execute Number: 1
 
-
-# Now, when you are somewhere on your computer, you can jump back to a saved caret
-PS /somewhere/on/your/computer> jump home
-PS /home/you
+# Now, the selected command will be executed directly
 ```
 
 
