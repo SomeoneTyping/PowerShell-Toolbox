@@ -51,8 +51,8 @@ function Enter-Folder {
         if ($Remove) {
             $searchRemoveRequest = Get-CsvValues -Path $pathesFile -Key "tag" -Value $Remove
             $resultCount = ($searchRemoveRequest | Measure-Object).Count
-            $input = Read-Host ([string]::Format("Remove these {0} entries? [J/N]", $resultCount))
-            if ($input -eq "j") {
+            $userInput = Read-Host ([string]::Format("Remove these {0} entries? [J/N]", $resultCount))
+            if ($userInput -eq "j") {
                 foreach($entry in $searchRemoveRequest) {
                     Remove-CsvValue -Path $pathesFile -Key "tag" -Value $entry.tag
                 }
@@ -65,29 +65,36 @@ function Enter-Folder {
             return
         }
 
+        # Zero Results
         $resultCount = ($resultsForContainsSearch | Measure-Object).Count
-        switch ($resultCount) {
-            0 {
-                Write-Host ([string]::Format("No existing pathes for request '{0}'", $Tag)) -ForegroundColor Red
+        if ($resultCount -eq 0) {
+            Write-Host ([string]::Format("No existing pathes for request '{0}'", $Tag)) -ForegroundColor Red
+            return
+        }
+
+        # One Result
+        if ($resultCount -eq 1) {
+            $firstResult = $resultsForContainsSearch | Select-Object -First 1
+            if (Test-Path $firstResult.path) {
+                Set-Location $firstResult.path
+            } else {
+                Write-Host ([string]::Format("The path '{0}' is not available", $firstResult.path)) -ForegroundColor Yellow
             }
-            1 {
-                $resultsForContainsSearch | Where-Object { (Test-Path $_.path) } | Select-Object -First 1 | Foreach-Object { Set-Location $_.path }
-            }
-            Default {
-                Write-Host "There is more than one result"
-                $counter = 1;
-                foreach ($path in $resultsForContainsSearch) {
-                    $color = if (Test-Path $path.path) { "White" } else { "Yellow" }
-                    $tagText = $path.tag
-                    Write-InfoLine ("($counter) $tagText") $path.path -space 25 -color $color
-                    $counter++;
-                }
-                $input = Read-Host "Goto Path"
-                if ($input -match "^[0-9]{1,2}$") {
-                    $inputAsNumber = ($input -as [int]) - 1
-                    $resultsForContainsSearch | Select-Object -Index $inputAsNumber | Set-Location
-                }
-            }
+            return
+        }
+
+        # Multiple Results
+        $counter = 1;
+        foreach ($path in $resultsForContainsSearch) {
+            $color = if (Test-Path $path.path) { "White" } else { "Yellow" }
+            $tagText = $path.tag
+            Write-InfoLine ("($counter) $tagText") $path.path -space 25 -color $color
+            $counter++;
+        }
+        $userInput = Read-Host "Goto Path"
+        if ($userInput -match "^[0-9]{1,2}$") {
+            $inputAsNumber = ($userInput -as [int]) - 1
+            $resultsForContainsSearch | Select-Object -Index $inputAsNumber | Set-Location
         }
     }
 }
