@@ -7,7 +7,7 @@ function Invoke-DockerInspector {
         Write-Headline "Active Docker Containers"
         if ($allContainers) {
             foreach ($container in $allContainers) {
-                Write-DockerContainer -Name $container.Name -Image $container.Image -Status $container.Status -Ports $container.Ports
+                Write-DockerContainer -Name $container.Name -Id $container.ID -Image $container.Image -Status $container.Status -Ports $container.Ports
                 $counter++;
             }
         }

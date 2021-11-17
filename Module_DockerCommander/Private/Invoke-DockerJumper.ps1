@@ -21,7 +21,7 @@ function Invoke-DockerJumper {
         $counter = 1
         foreach ($container in $allRunngingContainer) {
             Write-Host "  $counter) " -NoNewLine
-            Write-DockerContainer -Name $container.Name -Image $container.Image -Status $container.Status -Ports $container.Ports
+            Write-DockerContainer -Name $container.Name -Id $container.ID -Image $container.Image -Status $container.Status -Ports $container.Ports
             $counter++;
         }
         $userInput = Read-Host "Jump into container"
