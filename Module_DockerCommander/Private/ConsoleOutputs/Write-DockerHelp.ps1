@@ -3,7 +3,7 @@ function Write-DockerHelp {
     process {
 
         Write-Host ""
-        Write-Host "usage: docker-boost [action]"
+        Write-Host "usage: dc [action]"
         Write-Host ""
         Write-Host "Actions:"
         Write-Host "  lumos                                  --> Show all active containers and all images"
