@@ -8,7 +8,7 @@
 
     process {
 
-        if (-not $CommandEntry.criteriaModus) {
+        if ((-not $CommandEntry) -or (-not $CommandEntry.criteriaModus)) {
             return Out-Null -InputObject $CommandEntry
         }
 

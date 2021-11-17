@@ -6,6 +6,7 @@ Contains helpful PowerShell-Modules for everyday work.
 
 See comments in "import.ps1" file for temporary import and permanent import (or import with every start of the PowerShell)
 
+
 ## Module: Jumper
 
 Attention: The Jumper needs the module "CsvTools" in this repository
@@ -27,6 +28,7 @@ PS /home/you
 
 Info: Your first saved caret will be choosen when you just type "jump".
 Info: The search for the caret is a contains-search, so its enought just to type "jump ho" in the example above.
+
 
 ## Module: DockerCommander
 
@@ -51,7 +53,6 @@ PS /home/you> dc jump
 ```
 
 
-
 ## Module: QuickCommand
 
 Attention: The QuickCommand needs the module "CsvTools" in this repository
@@ -72,6 +73,8 @@ PS /home/some/docker/folder> quick
 Execute Number: 1
 
 # Now, the selected command will be executed directly
+
+
 ```
 
 
