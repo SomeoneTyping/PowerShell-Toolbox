@@ -11,7 +11,7 @@ function Invoke-QuickCommand {
         $filteredCommands = Get-CsvValues -Path $pathCommandsCsv -Key "criteria" -ValueContains "*" | Get-FilteredCommands
 
         if (-not $filteredCommands) {
-            Write-Host "Keine Befehle verfuegbar"
+            Write-Host "No Commands available"
             return
         }
 

@@ -1,8 +1,7 @@
 ﻿function Get-FilteredCommands {
 
     param (
-        [Parameter( Mandatory , ValueFromPipeline )]
-        [ValidateNotNullOrEmpty()]
+        [Parameter( ValueFromPipeline )]
         $CommandEntry
     )
 

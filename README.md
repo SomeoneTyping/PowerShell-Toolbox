@@ -60,20 +60,25 @@ Attention: The QuickCommand needs the module "CsvTools" in this repository
 Example:
 
 ```powershell
-# In your current folder is a Dockerfile
+
+# First add commands you want to quick-execute. There is an example-file in the configurations-subfolder
+PS /home/some/docker/folder> cd ./Module_QuickCommand/Configurations/
+PS /home/some/docker/folder> mv configurations.csv.EXAMPLE configurations.csv
+PS /home/some/docker/folder> vim configurations.csv
+
+# Example: In your current folder is a Dockerfile
 PS /home/some/docker/folder> ls
 
 [...]
 -a----       01.01.2019     15:00            123 Dockerfile
 [...]
 
-# Type "quick" and it will list some previously saved commands (see configurations.csv.EXAMPLE) to execute directly
+# Type "quick" and it will list some previously saved commands to execute them directly
 PS /home/some/docker/folder> quick
   1 - docker build --tag currentdocker . ; docker run -it currentdocker
 Execute Number: 1
 
 # Now, the selected command will be executed directly
-
 
 ```
 
