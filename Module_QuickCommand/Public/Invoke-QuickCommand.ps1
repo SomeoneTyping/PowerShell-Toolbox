@@ -1,8 +1,8 @@
+function Invoke-QuickCommand {
 <#
     .SYNOPSIS
-    Schaltet Debug-Ausgaben in der PowerShell ein oder aus.
+    Suggests commands depending on predefined ruleset in the configurations folder
 #>
-function Invoke-QuickCommand {
 
     process {
 
