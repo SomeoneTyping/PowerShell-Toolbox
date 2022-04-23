@@ -3,21 +3,34 @@ function Invoke-QuickCommand {
     .SYNOPSIS
     Suggests commands depending on predefined ruleset in the configurations folder
 #>
+    param (
+        [Alias("s")]
+        [string]
+        $Search
+    )
 
     process {
 
-        # 1. Generiere die Befehlsliste
+        # Get all available commands
         $pathCommandsCsv = Get-FileLocationCommandsCsv
-        $filteredCommands = Get-CsvValues -Path $pathCommandsCsv -Key "criteria" -ValueContains "*" | Get-FilteredCommands
+        $allCommands = Get-CsvValues -Path $pathCommandsCsv -Key "criteria" -ValueContains "*"
 
-        if (-not $filteredCommands) {
+        if (-not [string]::IsNullOrEmpty($Search)) {
+            # Modus: Search in commands
+            $allCommands = $allCommands | Where-Object { $_.command.ToLower().Contains($Search.ToLower()) }
+        } else {
+            # Modus: List suggested commands
+            $allCommands = $allCommands | Get-FilteredCommands
+        }
+
+        if (-not $allCommands) {
             Write-Host "No Commands available"
             return
         }
 
-        # 2. Gebe die Liste aus und gebe eine Auswahlmöglichkeit
+        # Write list of commands and show selection
         $counter = 1
-        foreach ($command in $filteredCommands) {
+        foreach ($command in $allCommands) {
             Write-Host ([string]::Format(" {0} - ", $counter.ToString().PadLeft(2))) -NoNewline
             Write-Host $command.command -NoNewline -ForegroundColor Green
             Write-Host ([string]::Format(" | {0}", $command.description))
@@ -25,11 +38,11 @@ function Invoke-QuickCommand {
             $counter++
         }
 
-        # 3. Lese Eingabe
+        # Read selected command
         $input = Read-Host "Execute Number"
         if ($input -match "^[0-9]{1,2}$") {
             $inputAsNumber = ($input -as [int]) - 1
-            $executionCommand = $filteredCommands | Select-Object -Index $inputAsNumber
+            $executionCommand = $allCommands | Select-Object -Index $inputAsNumber
             Invoke-Expression $executionCommand.command
         }
     }

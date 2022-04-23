@@ -23,6 +23,7 @@ foreach ($file in @($PublicFunctions + $PrivateFunctions)) {
 }
 
 # Some Convenience Aliases
-Set-Alias -Name Quick            -Value Invoke-QuickCommand
+Set-Alias -Name Quick   -Value Invoke-QuickCommand
+Set-Alias -Name HelpMe  -Value Show-Command
 
 Export-ModuleMember -Function $PublicFunctions.BaseName -Alias *
