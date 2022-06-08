@@ -29,7 +29,14 @@ function Invoke-DockerJumper {
             $inputAsNumber = ($userInput -as [int]) - 1
             $selectedContainer = $allRunngingContainer | Select-Object -Index $inputAsNumber
             if ($selectedContainer) {
-                docker exec -ti $selectedContainer.Id "/bin/bash"
+                $hasBash = docker exec -it $selectedContainer.Id sh -c "test -e /bin/bash && echo 'true'"
+                if ($hasBash) {
+                    Write-Host "Container has bash --> Jump!"
+                    docker exec -ti $selectedContainer.Id "/bin/bash"
+                } else {
+                    Write-Host "Container has sh --> Jump!"
+                    docker exec -ti $selectedContainer.Id "/bin/sh"
+                }
             }
         }
     }

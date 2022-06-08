@@ -22,7 +22,7 @@ function Invoke-DockerCleaner {
 
             $allUntaggedImages = Get-DockerImages | Where-Object { $_.Tag -eq "<none>" }
             foreach ($image in $allUntaggedImages) {
-                docker rmi $image.id
+                docker rmi $image.id -f
             }
         }
 
