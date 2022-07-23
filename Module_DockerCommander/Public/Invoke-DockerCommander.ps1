@@ -24,7 +24,8 @@ function Invoke-DockerCommander {
                 Invoke-DockerJumper
             }
             lumos {
-                Invoke-DockerInspector
+                $parameterWithDefault = if ($Parameter) { $Parameter } else { "all" }
+                Invoke-DockerInspector $parameterWithDefault
             }
             stop {
                 Invoke-DockerStopper
