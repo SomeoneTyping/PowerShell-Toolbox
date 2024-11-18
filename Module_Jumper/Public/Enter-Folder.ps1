@@ -13,10 +13,10 @@ function Enter-Folder {
         $Add,
 
         [switch]
-        $List,
+        $Edit,
 
-        [string]
-        $Remove
+        [switch]
+        $List
     )
 
     begin {
@@ -27,6 +27,11 @@ function Enter-Folder {
 
         $tagValidated = if ($Tag) { $Tag.ToLower() } else { "*" }
         $pathesFile = Get-FileLocationPathesCsv
+
+        if ($Edit.IsPresent) {
+            Invoke-Item $pathesFile
+            return
+        }
 
         if ($Add) {
             $searchAddRequest = Get-ExactCsvValues -Path $pathesFile -Key "tag" -Value $Add
@@ -42,21 +47,10 @@ function Enter-Folder {
             return
         }
 
-        $resultsForContainsSearch = Get-CsvValues -Path $pathesFile -Key "tag" -ValueContains $tagValidated
+        $user = $env:PS_USER
+        $resultsForContainsSearch = Get-CsvValues -Path $pathesFile -Key "tag" -ValueContains $tagValidated | Where-Object { $_.user -eq $user }
         if (-not $resultsForContainsSearch) {
             Write-Host ([string]::Format("No results found for request '{0}'", $Tag)) -ForegroundColor Red
-            return
-        }
-
-        if ($Remove) {
-            $searchRemoveRequest = Get-CsvValues -Path $pathesFile -Key "tag" -Value $Remove
-            $resultCount = ($searchRemoveRequest | Measure-Object).Count
-            $userInput = Read-Host ([string]::Format("Remove these {0} entries? [J/N]", $resultCount))
-            if ($userInput -eq "j") {
-                foreach($entry in $searchRemoveRequest) {
-                    Remove-CsvValue -Path $pathesFile -Key "tag" -Value $entry.tag
-                }
-            }
             return
         }
 

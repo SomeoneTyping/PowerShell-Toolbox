@@ -1,6 +1,7 @@
 function Invoke-DockerCommander {
 
     param (
+        [ValidateSet("clean", "jump", "lumos", "stop", "start")]
         [string]
         $Command,
 
@@ -20,7 +21,6 @@ function Invoke-DockerCommander {
                 Invoke-DockerCleaner $parameterWithDefault
             }
             jump {
-                # Springe in einen laufenden Container
                 Invoke-DockerJumper
             }
             lumos {
@@ -29,6 +29,9 @@ function Invoke-DockerCommander {
             }
             stop {
                 Invoke-DockerStopper
+            }
+            start {
+                Invoke-DockerStarter
             }
         }
     }

@@ -18,7 +18,7 @@ function Add-CsvValue {
 
     process {
 
-        Write-Debug "[Add-CsvValue] Path: '$Path'"
+        Write-Debug "[Add-CsvValue] Path: '$Path' Object: '$PsObject'"
 
         if (-not (Test-Path $Path)) {
             New-Item -Path $Path -ItemType File -Force | Out-Null
